@@ -9,5 +9,6 @@ module.exports = {
   },
   plugins: [
     // line-clamp现在是Tailwind CSS核心功能的一部分
+    require('@tailwindcss/typography'),
   ],
 } 

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import ReactMarkdown from 'react-markdown';
 
 // 数据库返回的数据结构
 interface DbPrompt {
@@ -48,6 +49,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [previewPrompt, setPreviewPrompt] = useState<string | null>(null);
 
   // 检查是否管理员访问模式
   useEffect(() => {
@@ -167,6 +169,54 @@ print(sum_even_numbers(my_list)) # Output: 12`,
 
   return (
     <div className="container mx-auto px-4 py-8">
+      {/* 弹窗预览 */}
+      {previewPrompt !== null && (
+        <div className="fixed inset-0 backdrop-blur-md bg-white/30 z-50 flex items-center justify-center p-4" onClick={() => setPreviewPrompt(null)}>
+          <div className="bg-white/95 rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] overflow-y-auto backdrop-blur-sm" onClick={(e) => e.stopPropagation()}>
+            <div className="flex justify-between items-center p-4 border-b border-gray-200">
+              <h3 className="text-xl font-semibold text-gray-900">Prompt 详情</h3>
+              <button 
+                onClick={() => setPreviewPrompt(null)}
+                className="text-gray-400 hover:text-gray-500 focus:outline-none"
+              >
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="p-6">
+              <div className="prose prose-sm max-w-none">
+                <ReactMarkdown>{previewPrompt}</ReactMarkdown>
+              </div>
+              <div className="mt-6 flex justify-end">
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(previewPrompt);
+                    // 复制成功提示
+                    const copyButton = document.getElementById('copy-btn');
+                    if (copyButton) {
+                      const originalText = copyButton.textContent;
+                      copyButton.textContent = '已复制!';
+                      copyButton.classList.add('bg-green-500');
+                      copyButton.classList.remove('bg-blue-500');
+                      setTimeout(() => {
+                        copyButton.textContent = originalText;
+                        copyButton.classList.remove('bg-green-500');
+                        copyButton.classList.add('bg-blue-500');
+                      }, 1500);
+                    }
+                  }}
+                  id="copy-btn"
+                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                >
+                  复制全文
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <header className="mb-8 text-center">
         <h1 className="text-3xl font-bold text-gray-900">Prompt 工程案例库</h1>
         <p className="text-gray-600 mt-2">收集和展示优秀的 Prompt 案例</p>
@@ -245,17 +295,16 @@ print(sum_even_numbers(my_list)) # Output: 12`,
                   复制
                 </button>
               </div>
-              <div className="text-gray-600 mb-4 h-20 overflow-hidden relative group">
+              <div 
+                className="text-gray-600 mb-4 h-20 overflow-hidden relative cursor-pointer"
+                onClick={() => setPreviewPrompt(card.prompt)}
+              >
                 <p className="line-clamp-3">{card.prompt}</p>
                 {card.prompt.length > 100 && (
-                  <div className="absolute bottom-0 right-0 bg-gradient-to-l from-white to-transparent w-20 h-6"></div>
+                  <div className="absolute bottom-0 right-0 bg-gradient-to-l from-white to-transparent w-full h-8 flex items-end justify-center">
+                    <span className="text-blue-500 text-xs bg-white px-2 py-1 rounded-full shadow-sm">点击查看全文</span>
+                  </div>
                 )}
-                
-                {/* 鼠标悬浮时显示的完整内容预览 */}
-                <div className="opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 absolute left-0 top-0 z-10 bg-white border border-gray-200 rounded-md shadow-lg p-4 w-full max-w-md max-h-80 overflow-y-auto text-sm">
-                  <div className="font-medium text-gray-900 mb-2">完整Prompt内容：</div>
-                  <p className="whitespace-pre-wrap break-words">{card.prompt}</p>
-                </div>
               </div>
               
               <h3 className="text-lg font-semibold mb-2 text-gray-900">效果预览:</h3>
