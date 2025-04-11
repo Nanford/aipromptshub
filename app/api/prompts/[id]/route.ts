@@ -3,10 +3,10 @@ import { supabase } from '../../../../lib/supabase';
 
 export async function PUT(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const id = context.params.id;
+    const id = params.id;
     const updates = await request.json();
     
     const dbUpdates = {
@@ -38,10 +38,10 @@ export async function PUT(
 
 export async function DELETE(
   request: Request,
-  context: { params: { id: string } }
+  { params }: { params: { id: string } }
 ) {
   try {
-    const id = context.params.id;
+    const id = params.id;
     
     const { error } = await supabase
       .from('prompts')
