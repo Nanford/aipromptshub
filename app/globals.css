@@ -1,26 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --background: #f3f4f6;
+  --foreground: #1f2937;
 }
 
 body {
-  background: var(--background);
+  font-family: 'Inter', sans-serif;
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
 }
+
+/* 按钮悬停效果 */
+.filter-btn:hover {
+  background-color: #e5e7eb;
+}
+
+.filter-btn.active {
+  background-color: #d1d5db;
+  font-weight: 600;
+}
+
+/* 卡片阴影和圆角 */
+.prompt-card {
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.prompt-card:hover {
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+/* 隐藏元素的类 */
+.hidden {
+  display: none;
+}
+
+/* 苹果经典配色系列 */
+.tag-text { background-color: #E8F0FE; color: #1A73E8; }
+.tag-image { background-color: #E6F4EA; color: #137333; }
+.tag-media { background-color: #FCE8E6; color: #C5221F; }
+.tag-creative { background-color: #FEF7E0; color: #EA8600; }
+.tag-code { background-color: #F3E8FD; color: #9334E6; }
+.tag-general { background-color: #E8EAED; color: #5F6368; }
+
+/* AI模型标签样式 */
+.ai-tag {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.625rem;
+  border-radius: 9999px;
+}
+
+.ai-ChatGPT { background-color: #E9F7FE; color: #1E88E5; }
+.ai-Claude { background-color: #F3E5F5; color: #9C27B0; }
+.ai-Gemini { background-color: #E3F2FD; color: #2196F3; }
+.ai-Deepseek { background-color: #FFF3E0; color: #FF9800; }
+.ai-Midjourney { background-color: #F9FBE7; color: #AFB42B; }
+.ai-Grok { background-color: #FFEBEE; color: #F44336; }
+.ai-豆包 { background-color: #E8F5E9; color: #4CAF50; }
+.ai-QWEN { background-color: #ECEFF1; color: #607D8B; }
+.ai-文心一言 { background-color: #E1F5FE; color: #0288D1; }
+.ai-Kimi { background-color: #F1F8E9; color: #689F38; }
+.ai-klingai { background-color: #EDE7F6; color: #673AB7; }
