@@ -94,7 +94,7 @@ npm run dev
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `NEXT_PUBLIC_SITE_URL`
-4. 部署完成后，可访问网站 (如：https://aipromptshub.art)
+4. 部署完成后，可访问网站 (如：https://example.com)
 
 ### 自定义域名
 
@@ -114,8 +114,8 @@ npm run dev
 ### 管理员
 
 1. 访问方式：
-   - 方式一：访问首页并添加参数 `/?adminToken=aiPrompts2024`，将显示管理入口
-   - 方式二：直接访问 `/admin` 路径，使用密码 `aiPrompts2024Admin` 登录
+   - 方式一：访问首页并添加参数 `**************`，将显示管理入口
+   - 方式二：直接访问 `/admin` 路径，使用密码 `**************` 登录
 2. 在管理界面中添加、编辑和删除Prompt案例
 3. 可以指定Prompt所适用的AI模型（如ChatGPT、Claude、Midjourney等）
 4. 使用"退出登录"按钮安全离开管理模式
