@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 
 // 定义数据类型
 type PromptCard = {
@@ -43,7 +42,6 @@ const aiModels = [
 ];
 
 export default function AdminPage() {
-  const router = useRouter();
   const [authenticated, setAuthenticated] = useState(false);
   const [adminPassword, setAdminPassword] = useState('');
   const [prompts, setPrompts] = useState<PromptCard[]>([]);
@@ -194,9 +192,9 @@ export default function AdminPage() {
       
       // 重置表单
       resetForm();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error saving prompt:', err);
-      setError(err.message || '保存数据失败，请重试');
+      setError(err instanceof Error ? err.message : '保存数据失败，请重试');
     } finally {
       setSubmitting(false);
     }
@@ -220,9 +218,9 @@ export default function AdminPage() {
       
       // 从本地数据中移除
       setPrompts(prompts.filter(p => p.id !== id));
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error deleting prompt:', err);
-      setError(err.message || '删除数据失败，请重试');
+      setError(err instanceof Error ? err.message : '删除数据失败，请重试');
     } finally {
       setLoading(false);
     }

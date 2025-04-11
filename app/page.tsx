@@ -233,7 +233,13 @@ print(sum_even_numbers(my_list)) # Output: 12`,
                 </div>
               ) : card.imageUrl ? (
                 <div className="mb-4 bg-gray-200 rounded aspect-video flex items-center justify-center">
-                  <img src={card.imageUrl} alt="效果图片" className="w-full h-full object-cover rounded" />
+                  <Image 
+                    src={card.imageUrl} 
+                    alt="效果图片" 
+                    className="w-full h-full object-cover rounded" 
+                    width={600}
+                    height={400}
+                  />
                 </div>
               ) : (
                 <div className="mb-4 p-4 bg-gray-50 rounded border border-gray-200 text-sm text-gray-700 whitespace-pre-line">
