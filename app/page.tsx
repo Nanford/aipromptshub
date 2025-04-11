@@ -222,8 +222,41 @@ print(sum_even_numbers(my_list)) # Output: 12`,
                 )}
               </div>
               
-              <h3 className="text-lg font-semibold mb-2 text-gray-900">Prompt:</h3>
-              <p className="text-gray-600 mb-4 flex-grow">{card.prompt}</p>
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="text-lg font-semibold text-gray-900">Prompt:</h3>
+                <button 
+                  onClick={(event) => {
+                    navigator.clipboard.writeText(card.prompt);
+                    // 显示复制成功的临时提示
+                    const button = event.currentTarget as HTMLButtonElement;
+                    const originalText = button.textContent;
+                    button.textContent = '已复制!';
+                    button.classList.add('text-green-500');
+                    setTimeout(() => {
+                      button.textContent = originalText;
+                      button.classList.remove('text-green-500');
+                    }, 1500);
+                  }}
+                  className="text-sm px-2 py-1 bg-gray-100 hover:bg-gray-200 rounded text-gray-600 transition-colors flex items-center"
+                >
+                  <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path>
+                  </svg>
+                  复制
+                </button>
+              </div>
+              <div className="text-gray-600 mb-4 h-20 overflow-hidden relative group">
+                <p className="line-clamp-3">{card.prompt}</p>
+                {card.prompt.length > 100 && (
+                  <div className="absolute bottom-0 right-0 bg-gradient-to-l from-white to-transparent w-20 h-6"></div>
+                )}
+                
+                {/* 鼠标悬浮时显示的完整内容预览 */}
+                <div className="opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 absolute left-0 top-0 z-10 bg-white border border-gray-200 rounded-md shadow-lg p-4 w-full max-w-md max-h-80 overflow-y-auto text-sm">
+                  <div className="font-medium text-gray-900 mb-2">完整Prompt内容：</div>
+                  <p className="whitespace-pre-wrap break-words">{card.prompt}</p>
+                </div>
+              </div>
               
               <h3 className="text-lg font-semibold mb-2 text-gray-900">效果预览:</h3>
               
