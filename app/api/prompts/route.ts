@@ -30,17 +30,19 @@ export async function POST(request: Request) {
   try {
     const promptData = await request.json();
     
-    // 转换字段名为小写
+    // 转换字段名为小写，并确保iscode是布尔值
     const dbData = {
       category: promptData.category,
       prompt: promptData.prompt,
       effect: promptData.effect,
       imageurl: promptData.imageUrl,
       sourceurl: promptData.sourceUrl,
-      iscode: promptData.isCode,
+      iscode: promptData.isCode === true ? true : false, // 强制转换为布尔值
       aimodel: promptData.aiModel,
       createdat: new Date().toISOString()
     };
+    
+    console.log('创建数据:', JSON.stringify(dbData));
     
     const { data, error } = await supabase
       .from('prompts')
@@ -57,11 +59,11 @@ export async function POST(request: Request) {
       id: data[0].id,
       category: data[0].category,
       prompt: data[0].prompt,
-      effect: data[0].effect,
-      imageUrl: data[0].imageurl,
+      effect: data[0].effect || '',
+      imageUrl: data[0].imageurl || '',
       sourceUrl: data[0].sourceurl,
-      isCode: data[0].iscode,
-      aiModel: data[0].aimodel,
+      isCode: data[0].iscode === true,
+      aiModel: data[0].aimodel || '',
       createdAt: data[0].createdat
     } : null;
     

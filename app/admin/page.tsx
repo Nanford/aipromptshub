@@ -138,7 +138,16 @@ export default function AdminPage() {
     
     if (type === 'checkbox') {
       const checked = (e.target as HTMLInputElement).checked;
-      setCurrentPrompt({ ...currentPrompt, [name]: checked });
+      console.log(`Checkbox ${name} changed to: ${checked}`); // 添加调试日志
+      setCurrentPrompt(prev => {
+        // 创建新对象并明确设置布尔值
+        const updated = { 
+          ...prev, 
+          [name]: checked 
+        };
+        console.log('Updated prompt:', updated);
+        return updated;
+      });
     } else {
       setCurrentPrompt({ ...currentPrompt, [name]: value });
     }
@@ -151,6 +160,14 @@ export default function AdminPage() {
       setSubmitting(true);
       setError(null);
       
+      // 确保isCode是布尔值
+      const promptToSubmit = {
+        ...currentPrompt,
+        isCode: currentPrompt.isCode === true
+      };
+      
+      console.log('提交数据:', promptToSubmit);
+      
       if (formMode === 'add') {
         // 添加新Prompt
         const response = await fetch('/api/prompts', {
@@ -158,7 +175,7 @@ export default function AdminPage() {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(currentPrompt),
+          body: JSON.stringify(promptToSubmit),
         });
         
         if (!response.ok) {
@@ -170,12 +187,12 @@ export default function AdminPage() {
         setPrompts([data.prompt, ...prompts]);
       } else {
         // 更新现有Prompt
-        const response = await fetch(`/api/prompts/${currentPrompt.id}`, {
+        const response = await fetch(`/api/prompts/${promptToSubmit.id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(currentPrompt),
+          body: JSON.stringify(promptToSubmit),
         });
         
         if (!response.ok) {
@@ -185,7 +202,7 @@ export default function AdminPage() {
         
         // 更新本地数据
         const updatedPrompts = prompts.map(p => 
-          p.id === currentPrompt.id ? currentPrompt : p
+          p.id === promptToSubmit.id ? promptToSubmit : p
         );
         setPrompts(updatedPrompts);
       }
@@ -227,7 +244,17 @@ export default function AdminPage() {
   }
 
   function handleEdit(prompt: PromptCard) {
-    setCurrentPrompt(prompt);
+    // 确保所有字段都有值，防止undefined
+    setCurrentPrompt({
+      id: prompt.id || '',
+      category: prompt.category || 'text',
+      prompt: prompt.prompt || '',
+      effect: prompt.effect || '',
+      sourceUrl: prompt.sourceUrl || '',
+      imageUrl: prompt.imageUrl || '',
+      isCode: prompt.isCode === true ? true : false,
+      aiModel: prompt.aiModel || ''
+    });
     setFormMode('edit');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -388,7 +415,7 @@ export default function AdminPage() {
                 <input
                   type="url"
                   name="imageUrl"
-                  value={currentPrompt.imageUrl}
+                  value={currentPrompt.imageUrl || ''}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="https://example.com/image.jpg"
@@ -400,7 +427,7 @@ export default function AdminPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">适用AI模型</label>
                 <select
                   name="aiModel"
-                  value={currentPrompt.aiModel}
+                  value={currentPrompt.aiModel || ''}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   disabled={submitting}

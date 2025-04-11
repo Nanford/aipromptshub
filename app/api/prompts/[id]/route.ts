@@ -15,9 +15,11 @@ export async function PUT(
       effect: updates.effect,
       imageurl: updates.imageUrl,
       sourceurl: updates.sourceUrl,
-      iscode: updates.isCode,
+      iscode: updates.isCode === true ? true : false,
       aimodel: updates.aiModel
     };
+    
+    console.log('更新数据:', JSON.stringify(dbUpdates));
     
     const { error } = await supabase
       .from('prompts')
