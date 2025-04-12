@@ -310,8 +310,8 @@ print(sum_even_numbers(my_list)) # Output: 12`,
               <h3 className="text-lg font-semibold mb-2 text-gray-900">效果预览:</h3>
               
               {card.isCode ? (
-                <div className="mb-4 p-4 bg-gray-900 text-white rounded font-mono text-sm overflow-x-auto">
-                  <pre><code>{card.effect}</code></pre>
+                <div className="mb-4 p-4 bg-gray-900 text-white rounded font-mono text-sm overflow-x-auto max-h-135 overflow-y-auto">
+                  <pre className="m-0"><code>{card.effect}</code></pre>
                 </div>
               ) : card.imageUrl ? (
                 <div className="mb-4 bg-gray-200 rounded aspect-video flex items-center justify-center">
@@ -320,11 +320,11 @@ print(sum_even_numbers(my_list)) # Output: 12`,
                     alt="效果图片" 
                     className="w-full h-full object-cover rounded" 
                     width={600}
-                    height={400}
+                    height={800}
                   />
                 </div>
               ) : (
-                <div className="mb-4 p-4 bg-gray-50 rounded border border-gray-200 text-sm text-gray-700 whitespace-pre-line">
+                <div className="mb-4 p-4 bg-gray-50 rounded border border-gray-200 text-sm text-gray-700 whitespace-pre-line max-h-48 overflow-y-auto">
                   {card.effect}
                 </div>
               )}
