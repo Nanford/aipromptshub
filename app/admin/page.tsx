@@ -7,6 +7,7 @@ import Link from 'next/link';
 type PromptCard = {
   id: string;
   category: string;
+  title: string;
   prompt: string;
   effect: string;
   imageUrl?: string;
@@ -52,6 +53,7 @@ export default function AdminPage() {
   const [currentPrompt, setCurrentPrompt] = useState<PromptCard>({
     id: '',
     category: 'text',
+    title: '',
     prompt: '',
     effect: '',
     sourceUrl: '',
@@ -110,6 +112,7 @@ export default function AdminPage() {
           {
             id: '1',
             category: 'image',
+            title: '未命名',
             prompt: 'A futuristic cityscape at sunset, cyberpunk style, neon lights reflecting on wet streets, high detail, photorealistic, 8K.',
             effect: '',
             imageUrl: 'https://placehold.co/600x400/cccccc/888888?text=效果图片',
@@ -120,6 +123,7 @@ export default function AdminPage() {
           {
             id: '2',
             category: 'text',
+            title: '未命名',
             prompt: 'Summarize the following article into three key bullet points: [Article Text Placeholder]',
             effect: '效果文本会显示在这里...\n• 要点 1\n• 要点 2\n• 要点 3',
             sourceUrl: 'https://example.com/2',
@@ -248,6 +252,7 @@ export default function AdminPage() {
     setCurrentPrompt({
       id: prompt.id || '',
       category: prompt.category || 'text',
+      title: prompt.title || '',
       prompt: prompt.prompt || '',
       effect: prompt.effect || '',
       sourceUrl: prompt.sourceUrl || '',
@@ -263,6 +268,7 @@ export default function AdminPage() {
     setCurrentPrompt({
       id: '',
       category: 'text',
+      title: '',
       prompt: '',
       effect: '',
       sourceUrl: '',
@@ -370,6 +376,20 @@ export default function AdminPage() {
                     disabled={submitting}
                   />
                 </div>
+              </div>
+              
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">标题</label>
+                <input
+                  type="text"
+                  name="title"
+                  value={currentPrompt.title || ''}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="如：小红书爆款标题生成、SVG图标生成..."
+                  required
+                  disabled={submitting}
+                />
               </div>
               
               <div className="mb-4">

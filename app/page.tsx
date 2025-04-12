@@ -9,6 +9,7 @@ import ReactMarkdown from 'react-markdown';
 interface DbPrompt {
   id: string;
   category: string;
+  title: string;
   prompt: string;
   effect: string;
   imageurl?: string;
@@ -22,6 +23,7 @@ interface DbPrompt {
 type PromptCard = {
   id: string;
   category: string;
+  title: string;
   prompt: string;
   effect: string;
   imageUrl?: string;
@@ -86,6 +88,7 @@ export default function Home() {
         const formattedPrompts = data.prompts.map((item: DbPrompt) => ({
           id: item.id,
           category: item.category,
+          title: item.title || '',
           prompt: item.prompt,
           effect: item.effect,
           imageUrl: item.imageurl,
@@ -107,6 +110,7 @@ export default function Home() {
             {
               id: '1',
               category: 'image',
+              title: 'A futuristic cityscape at sunset, cyberpunk style, neon lights reflecting on wet streets, high detail, photorealistic, 8K.',
               prompt: 'A futuristic cityscape at sunset, cyberpunk style, neon lights reflecting on wet streets, high detail, photorealistic, 8K.',
               effect: '',
               imageUrl: 'https://placehold.co/600x400/cccccc/888888?text=效果图片',
@@ -116,6 +120,7 @@ export default function Home() {
             {
               id: '2',
               category: 'text',
+              title: 'Summarize the following article into three key bullet points: [Article Text Placeholder]',
               prompt: 'Summarize the following article into three key bullet points: [Article Text Placeholder]',
               effect: `效果文本会显示在这里...\n• 要点 1\n• 要点 2\n• 要点 3`,
               sourceUrl: '#',
@@ -124,6 +129,7 @@ export default function Home() {
             {
               id: '3',
               category: 'code',
+              title: 'Write a Python function that takes a list of integers and returns the sum of all even numbers in the list.',
               prompt: 'Write a Python function that takes a list of integers and returns the sum of all even numbers in the list.',
               effect: `def sum_even_numbers(numbers):
     total = 0
@@ -142,6 +148,7 @@ print(sum_even_numbers(my_list)) # Output: 12`,
             {
               id: '4',
               category: 'creative',
+              title: 'Write a short story opening about a detective discovering a mysterious object in a dusty attic.',
               prompt: 'Write a short story opening about a detective discovering a mysterious object in a dusty attic.',
               effect: `效果文本会显示在这里...\n\n阳光透过布满灰尘的天窗，投下斑驳的光柱。侦探哈里斯用手帕捂住口鼻，小心翼翼地拨开蛛网。在阁楼的角落，一个覆盖着天鹅绒布的箱子引起了他的注意...`,
               sourceUrl: '#',
@@ -170,6 +177,7 @@ print(sum_even_numbers(my_list)) # Output: 12`,
     if (searchQuery.trim() !== '') {
       const query = searchQuery.toLowerCase().trim();
       filtered = filtered.filter(card => 
+        card.title.toLowerCase().includes(query) ||
         card.prompt.toLowerCase().includes(query) || 
         card.effect.toLowerCase().includes(query) ||
         (card.aiModel && card.aiModel.toLowerCase().includes(query))
@@ -310,6 +318,11 @@ print(sum_even_numbers(my_list)) # Output: 12`,
               className="prompt-card bg-white p-6 rounded-lg shadow border border-gray-200 flex flex-col"
               data-category={card.category}
             >
+              {/* 卡片标题 */}
+              {card.title && (
+                <h2 className="text-xl font-bold text-gray-800 mb-3 border-b pb-2">{card.title}</h2>
+              )}
+              
               <div className="flex flex-wrap mb-4">
                 <span className={`inline-block ${categoryMap[card.category].tagClass} text-xs font-medium px-2.5 py-0.5 rounded-full mr-2`}>
                   {categoryMap[card.category].label}

@@ -11,6 +11,7 @@ export async function PUT(
     
     const dbUpdates = {
       category: updates.category,
+      title: updates.title,
       prompt: updates.prompt,
       effect: updates.effect,
       imageurl: updates.imageUrl,
