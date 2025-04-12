@@ -50,6 +50,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [previewPrompt, setPreviewPrompt] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   // 检查是否管理员访问模式
   useEffect(() => {
@@ -158,14 +159,35 @@ print(sum_even_numbers(my_list)) # Output: 12`,
     fetchPrompts();
   }, [activeFilter]);
 
-  // 筛选器更新时过滤数据
+  // 筛选器更新或搜索词更新时过滤数据
   useEffect(() => {
-    if (activeFilter === 'all') {
-      setFilteredPrompts(prompts);
-    } else {
-      setFilteredPrompts(prompts.filter(card => card.category === activeFilter));
+    // 先根据分类过滤
+    let filtered = activeFilter === 'all' 
+      ? prompts 
+      : prompts.filter(card => card.category === activeFilter);
+    
+    // 如果有搜索词，再过滤搜索结果
+    if (searchQuery.trim() !== '') {
+      const query = searchQuery.toLowerCase().trim();
+      filtered = filtered.filter(card => 
+        card.prompt.toLowerCase().includes(query) || 
+        card.effect.toLowerCase().includes(query) ||
+        (card.aiModel && card.aiModel.toLowerCase().includes(query))
+      );
     }
-  }, [activeFilter, prompts]);
+    
+    setFilteredPrompts(filtered);
+  }, [activeFilter, prompts, searchQuery]);
+
+  // 处理搜索输入
+  const handleSearchInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  // 清除搜索
+  const clearSearch = () => {
+    setSearchQuery('');
+  };
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -221,6 +243,34 @@ print(sum_even_numbers(my_list)) # Output: 12`,
         <h1 className="text-3xl font-bold text-gray-900">Prompt 工程案例库</h1>
         <p className="text-gray-600 mt-2">收集和展示优秀的 Prompt 案例</p>
       </header>
+
+      {/* 搜索框 */}
+      <div className="max-w-2xl mx-auto mb-8">
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="搜索Prompt、效果或AI模型..."
+            value={searchQuery}
+            onChange={handleSearchInput}
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 pl-10"
+          />
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+          {searchQuery && (
+            <button
+              onClick={clearSearch}
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
+              </svg>
+            </button>
+          )}
+        </div>
+      </div>
 
       <nav className="mb-8 flex flex-wrap justify-center gap-2">
         {Object.entries(categoryMap).map(([key, { label }]) => (
