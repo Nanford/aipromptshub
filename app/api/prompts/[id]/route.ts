@@ -14,10 +14,10 @@ export async function PUT(
       title: updates.title,
       prompt: updates.prompt,
       effect: updates.effect,
-      imageurl: updates.imageUrl,
-      sourceurl: updates.sourceUrl,
-      iscode: updates.isCode === true ? true : false,
-      aimodel: updates.aiModel
+      imageurl: updates.imageurl,
+      sourceurl: updates.sourceurl,
+      iscode: updates.iscode === true ? true : false,
+      aimodel: updates.aimodel
     };
     
     console.log('更新数据:', JSON.stringify(dbUpdates));
