@@ -33,12 +33,13 @@ export async function POST(request: Request) {
     // 转换字段名为小写，并确保iscode是布尔值
     const dbData = {
       category: promptData.category,
+      title: promptData.title,
       prompt: promptData.prompt,
       effect: promptData.effect,
-      imageurl: promptData.imageUrl,
-      sourceurl: promptData.sourceUrl,
-      iscode: promptData.isCode === true ? true : false, // 强制转换为布尔值
-      aimodel: promptData.aiModel,
+      imageurl: promptData.imageurl,
+      sourceurl: promptData.sourceurl,
+      iscode: promptData.iscode === true ? true : false,
+      aimodel: promptData.aimodel,
       createdat: new Date().toISOString()
     };
     
@@ -58,13 +59,14 @@ export async function POST(request: Request) {
     const responseData = data[0] ? {
       id: data[0].id,
       category: data[0].category,
+      title: data[0].title,
       prompt: data[0].prompt,
       effect: data[0].effect || '',
-      imageUrl: data[0].imageurl || '',
-      sourceUrl: data[0].sourceurl,
-      isCode: data[0].iscode === true,
-      aiModel: data[0].aimodel || '',
-      createdAt: data[0].createdat
+      imageurl: data[0].imageurl || '',
+      sourceurl: data[0].sourceurl,
+      iscode: data[0].iscode === true,
+      aimodel: data[0].aimodel || '',
+      createdat: data[0].createdat
     } : null;
     
     return NextResponse.json({ prompt: responseData });

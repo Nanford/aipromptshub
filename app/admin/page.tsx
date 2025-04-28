@@ -10,11 +10,11 @@ type PromptCard = {
   title: string;
   prompt: string;
   effect: string;
-  imageUrl?: string;
-  sourceUrl: string;
-  isCode?: boolean;
-  createdAt?: string;
-  aiModel?: string;
+  imageurl?: string;
+  sourceurl?: string;
+  iscode?: boolean;
+  createdat?: string;
+  aimodel?: string;
 };
 
 // 分类映射
@@ -29,8 +29,10 @@ const categoryMap: { [key: string]: string } = {
 
 // AI模型选项
 const aiModels = [
+  'ChatGPT-4o',
   'ChatGPT',
-  'Claude',
+  'ChatGPT-Sora',
+  'Claude-3.7-Sonnet',
   'Gemini',
   'Deepseek',
   'Midjourney',
@@ -39,7 +41,8 @@ const aiModels = [
   'QWEN',
   '文心一言',
   'Kimi',
-  'klingai'
+  'klingai',
+  '扣子空间'
 ];
 
 export default function AdminPage() {
@@ -56,10 +59,10 @@ export default function AdminPage() {
     title: '',
     prompt: '',
     effect: '',
-    sourceUrl: '',
-    imageUrl: '',
-    isCode: false,
-    aiModel: ''
+    sourceurl: '',
+    imageurl: '',
+    iscode: false,
+    aimodel: ''
   });
 
   // 验证管理员身份
@@ -115,10 +118,10 @@ export default function AdminPage() {
             title: '未命名',
             prompt: 'A futuristic cityscape at sunset, cyberpunk style, neon lights reflecting on wet streets, high detail, photorealistic, 8K.',
             effect: '',
-            imageUrl: 'https://placehold.co/600x400/cccccc/888888?text=效果图片',
-            sourceUrl: 'https://example.com/1',
-            createdAt: new Date().toISOString(),
-            aiModel: 'Midjourney'
+            imageurl: 'https://placehold.co/600x400/cccccc/888888?text=效果图片',
+            sourceurl: 'https://example.com/1',
+            createdat: new Date().toISOString(),
+            aimodel: 'Midjourney'
           },
           {
             id: '2',
@@ -126,9 +129,9 @@ export default function AdminPage() {
             title: '未命名',
             prompt: 'Summarize the following article into three key bullet points: [Article Text Placeholder]',
             effect: '效果文本会显示在这里...\n• 要点 1\n• 要点 2\n• 要点 3',
-            sourceUrl: 'https://example.com/2',
-            createdAt: new Date().toISOString(),
-            aiModel: 'Kimi'
+            sourceurl: 'https://example.com/2',
+            createdat: new Date().toISOString(),
+            aimodel: 'Kimi'
           },
         ]);
       }
@@ -167,10 +170,10 @@ export default function AdminPage() {
       // 确保isCode是布尔值
       const promptToSubmit = {
         ...currentPrompt,
-        isCode: currentPrompt.isCode === true
+        iscode: currentPrompt.iscode === true
       };
       
-      console.log('提交数据:', promptToSubmit);
+      console.log('提交数据 (handleSubmit):', promptToSubmit);
       
       if (formMode === 'add') {
         // 添加新Prompt
@@ -248,6 +251,8 @@ export default function AdminPage() {
   }
 
   function handleEdit(prompt: PromptCard) {
+    console.log('编辑数据 (handleEdit - incoming):', prompt);
+    
     // 确保所有字段都有值，防止undefined
     setCurrentPrompt({
       id: prompt.id || '',
@@ -255,10 +260,10 @@ export default function AdminPage() {
       title: prompt.title || '',
       prompt: prompt.prompt || '',
       effect: prompt.effect || '',
-      sourceUrl: prompt.sourceUrl || '',
-      imageUrl: prompt.imageUrl || '',
-      isCode: prompt.isCode === true ? true : false,
-      aiModel: prompt.aiModel || ''
+      sourceurl: prompt.sourceurl || '',
+      imageurl: prompt.imageurl || '',
+      iscode: prompt.iscode === true ? true : false,
+      aimodel: prompt.aimodel || ''
     });
     setFormMode('edit');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -271,10 +276,10 @@ export default function AdminPage() {
       title: '',
       prompt: '',
       effect: '',
-      sourceUrl: '',
-      imageUrl: '',
-      isCode: false,
-      aiModel: ''
+      sourceurl: '',
+      imageurl: '',
+      iscode: false,
+      aimodel: ''
     });
     setFormMode('add');
   }
@@ -367,8 +372,8 @@ export default function AdminPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">来源链接</label>
                   <input
                     type="url"
-                    name="sourceUrl"
-                    value={currentPrompt.sourceUrl}
+                    name="sourceurl"
+                    value={currentPrompt.sourceurl}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                     placeholder="https://example.com"
@@ -411,8 +416,8 @@ export default function AdminPage() {
                 <div className="flex items-center mb-2">
                   <input
                     type="checkbox"
-                    name="isCode"
-                    checked={currentPrompt.isCode}
+                    name="iscode"
+                    checked={!!currentPrompt.iscode}
                     onChange={handleInputChange}
                     className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                     disabled={submitting}
@@ -425,7 +430,7 @@ export default function AdminPage() {
                   onChange={handleInputChange}
                   rows={6}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                  placeholder={currentPrompt.isCode ? "输入代码..." : "输入效果文本..."}
+                  placeholder={currentPrompt.iscode ? "输入代码..." : "输入效果文本..."}
                   disabled={submitting}
                 ></textarea>
               </div>
@@ -434,8 +439,8 @@ export default function AdminPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">图片URL (可选，仅作图类)</label>
                 <input
                   type="url"
-                  name="imageUrl"
-                  value={currentPrompt.imageUrl || ''}
+                  name="imageurl"
+                  value={currentPrompt.imageurl || ''}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   placeholder="https://example.com/image.jpg"
@@ -446,8 +451,8 @@ export default function AdminPage() {
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-1">适用AI模型</label>
                 <select
-                  name="aiModel"
-                  value={currentPrompt.aiModel || ''}
+                  name="aimodel"
+                  value={currentPrompt.aimodel || ''}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
                   disabled={submitting}
@@ -514,7 +519,7 @@ export default function AdminPage() {
                           <div className="text-sm text-gray-900 truncate max-w-xs">{prompt.prompt}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          {prompt.createdAt ? new Date(prompt.createdAt).toLocaleString('zh-CN') : '-'}
+                          {prompt.createdat ? new Date(prompt.createdat).toLocaleString('zh-CN') : '-'}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                           <button 
