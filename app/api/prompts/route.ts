@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       createdat: new Date().toISOString()
     };
     
-    console.log('创建数据:', JSON.stringify(dbData));
+    // console.log('创建数据:', JSON.stringify(dbData));
     
     const { data, error } = await supabase
       .from('prompts')

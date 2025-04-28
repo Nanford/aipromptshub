@@ -145,14 +145,12 @@ export default function AdminPage() {
     
     if (type === 'checkbox') {
       const checked = (e.target as HTMLInputElement).checked;
-      console.log(`Checkbox ${name} changed to: ${checked}`); // 添加调试日志
       setCurrentPrompt(prev => {
         // 创建新对象并明确设置布尔值
         const updated = { 
           ...prev, 
           [name]: checked 
         };
-        console.log('Updated prompt:', updated);
         return updated;
       });
     } else {
@@ -172,8 +170,6 @@ export default function AdminPage() {
         ...currentPrompt,
         iscode: currentPrompt.iscode === true
       };
-      
-      console.log('提交数据 (handleSubmit):', promptToSubmit);
       
       if (formMode === 'add') {
         // 添加新Prompt
@@ -251,8 +247,6 @@ export default function AdminPage() {
   }
 
   function handleEdit(prompt: PromptCard) {
-    console.log('编辑数据 (handleEdit - incoming):', prompt);
-    
     // 确保所有字段都有值，防止undefined
     setCurrentPrompt({
       id: prompt.id || '',

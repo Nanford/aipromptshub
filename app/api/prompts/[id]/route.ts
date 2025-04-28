@@ -20,7 +20,7 @@ export async function PUT(
       aimodel: updates.aimodel
     };
     
-    console.log('更新数据:', JSON.stringify(dbUpdates));
+    // console.log('更新数据:', JSON.stringify(dbUpdates));
     
     const { error } = await supabase
       .from('prompts')
